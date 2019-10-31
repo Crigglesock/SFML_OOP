@@ -1,41 +1,65 @@
 #include"SFML/include/SFML/Graphics.hpp"
+#include<iostream>
 
-sf::Vector2f viewSize(1024, 768);
-sf::VideoMode vm(viewSize.x, viewSize.y);
-sf::RenderWindow window(vm, "Hello SFML!!!", sf::Style::Default);
+
 
 int main()
 {
 	//Initialize game objects
-	//Rectangle 
-	sf::RectangleShape rect(sf::Vector2f(500.0f, 300.0f));
-	rect.setFillColor(sf::Color::Green);
-	rect.setPosition(viewSize.x / 2, viewSize.y / 2);
-	rect.setOrigin(sf::Vector2f(rect.getSize().x / 2, rect.getSize().y / 2));
-	//Circle
-	sf::CircleShape circle(100);
-	circle.setFillColor(sf::Color::Black);
-	circle.setPosition(viewSize.x / 2, viewSize.y / 2);
-	circle.setOrigin(sf::Vector2f(circle.getRadius(), circle.getRadius()));
-	//Triangle
-	sf::ConvexShape triangle;
-	triangle.setPointCount(3);
-	triangle.setPoint(0, sf::Vector2f(-100, 0));
-	triangle.setPoint(1, sf::Vector2f(0, -100));
-	triangle.setPoint(2, sf::Vector2f(100, 0));
-	triangle.setFillColor(sf::Color(65,156,156,255));
-	triangle.setPosition(viewSize.x / 2, viewSize.y / 2);
+	sf::RenderWindow window(sf::VideoMode(640, 480), "Bouncing Mushroom");
+
+	sf::Texture mushroomTexture;
+	if (!mushroomTexture.loadFromFile("Deps/Images/Mushroom.png")) 
+	{
+		std::cout << "File failed to load" << std::endl;
+	}
+
+	sf::Sprite mushroom(mushroomTexture);
+	sf::Vector2u size = mushroomTexture.getSize();
+
+	mushroom.setOrigin(size.x / 2, size.y / 2);
+	sf::Vector2f increment(0.1f, 0.1f);
+
+
+	mushroom.setColor(sf::Color(255, 255, 255, 150));
 
 	while (window.isOpen())
 	{
 		//handle keyboard events
+		sf::Event event;
+		while(window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+			{
+				window.close();
+			}
+		}
 		//update game objects
-		window.clear(sf::Color::Red);
+
+		//X axis bounce
+		if((mushroom.getPosition().x + (size.x/2) > window.getSize().x && increment.x > 0)||(mushroom.getPosition().x - (size.x/2) < 0 && increment.x < 0))
+		{
+			//reverse direction on the x axis
+			increment.x = -increment.x;
+		}
+
+		//Y axis bounce
+		if ((mushroom.getPosition().y + (size.y / 2) > window.getSize().y && increment.y > 0) || (mushroom.getPosition().y - (size.y / 2) < 0 && increment.y < 0))
+		{
+			//reverse direction on the y axis
+			increment.y = -increment.y;
+		}
+
+		mushroom.setPosition(mushroom.getPosition() + increment);
+
+		window.clear(sf::Color::Blue);
+
 		//render game objects
-		window.draw(rect);
-		window.draw(circle);
-		window.draw(triangle);
+		window.draw(mushroom);
+		
 		window.display();
+
+
 	}
 	return 0;
 }
