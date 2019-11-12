@@ -17,9 +17,9 @@ private:
 	void MoveMushroom();
 	Window m_window;
 
-	sf::Texture mushroomTexture;
-	sf::Sprite mushroom();
-	sf::Vector2i increment;
+	sf::Texture m_mushroomTexture;
+	sf::Sprite m_mushroom;
+	sf::Vector2i m_increment;
 
 };
 

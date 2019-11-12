@@ -1,10 +1,10 @@
 #include "Game.h"
 
-Game::Game()
+Game::Game() : m_window("Bouncy Mushroom", sf::Vector2u(800,600))
 {
-	m_mushroomTexture.loadFromFile("Mushroom.png");
+	m_mushroomTexture.loadFromFile("Deps/Images/Mushroom.png");
 	m_mushroom.setTexture(m_mushroomTexture);
-	m_increment = sf::Vector2i(4, 4);
+	m_increment = sf::Vector2i(1, 1);
 }
 
 Game::~Game()
@@ -32,26 +32,35 @@ void Game::Render()
 
 Window * Game::GetWindow()
 {
-	return nullptr;
+	return &m_window;
 }
+
+
 
 void Game::MoveMushroom()
 {
 	sf::Vector2u l_windSize = m_window.GetWindowSize();
-	sf::Vector2u l_textSize = m_mushroom.GetSize();
+	sf::Vector2u l_textSize = m_mushroomTexture.getSize();
+	m_mushroom.setOrigin(l_textSize.x / 2, l_textSize.y / 2);
 
-	if ((!mushroom.getPosition().x > l_windSize.x - l_textSize && m_increment.x > 0) || (mushroom.getPosition().x < 0 && m_increment.x < 0))
-	{
-		m_increment.x = -m_increment.x;
-	}
+	//X axis bounce
+		if((m_mushroom.getPosition().x + (l_textSize.x/2) > l_windSize.x && m_increment.x > 0)||(m_mushroom.getPosition().x - (l_textSize.x/2) < 0 && m_increment.x < 0))
+		{
+			//reverse direction on the x axis
+			m_increment.x = -m_increment.x;
+		}
 
-	if ((!mushroom.getPosition().y > l_windSize.y - l_textSize && m_increment.y > 0) || (mushroom.getPosition().y < 0 && m_increment.y < 0))
-	{
-		m_increment.y = -m_increment.y;
-	}
+		//Y axis bounce
+		if ((m_mushroom.getPosition().y + (l_textSize.y / 2) > l_windSize.y && m_increment.y > 0) || (m_mushroom.getPosition().y - (l_textSize.y / 2) < 0 && m_increment.y < 0))
+		{
+			//reverse direction on the y axis
+			m_increment.y = -m_increment.y;
+		}
 
 	m_mushroom.setPosition(
-		m_mushroom.getPosition().x + m_increment.x
-		m_mushroom.getPosition().y + m_increment.y
-	);
+		m_mushroom.getPosition().x + m_increment.x,
+		m_mushroom.getPosition().y + m_increment.y)
+	;
 }
+
+
