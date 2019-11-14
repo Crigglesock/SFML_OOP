@@ -4,7 +4,7 @@ Game::Game() : m_window("Bouncy Mushroom", sf::Vector2u(800,600))
 {
 	m_mushroomTexture.loadFromFile("Deps/Images/Mushroom.png");
 	m_mushroom.setTexture(m_mushroomTexture);
-	m_increment = sf::Vector2i(1, 1);
+	m_increment = sf::Vector2i(400, 400);
 }
 
 Game::~Game()
@@ -35,6 +35,16 @@ Window * Game::GetWindow()
 	return &m_window;
 }
 
+sf::Time Game::GetElapsed()
+{
+	return m_elapsed;
+}
+
+void Game::RestartClock()
+{
+	m_elapsed = m_clock.restart();
+}
+
 
 
 void Game::MoveMushroom()
@@ -57,10 +67,11 @@ void Game::MoveMushroom()
 			m_increment.y = -m_increment.y;
 		}
 
+		float fElapsed = m_elapsed.asSeconds();
+
 	m_mushroom.setPosition(
-		m_mushroom.getPosition().x + m_increment.x,
-		m_mushroom.getPosition().y + m_increment.y)
-	;
+		m_mushroom.getPosition().x + (m_increment.x * fElapsed),
+		m_mushroom.getPosition().y + (m_increment.y * fElapsed));
 }
 
 

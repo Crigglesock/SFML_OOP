@@ -11,5 +11,7 @@ int main()
 		game.HandleInput();
 		game.Update();
 		game.Render();
+		//sf::sleep(sf::seconds(0.2)); //Sleep for 0.2 seconds
+		game.RestartClock(); // Restarting clock
 	}
 }
