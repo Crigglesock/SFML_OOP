@@ -41,7 +41,7 @@ int Snake::GetScore()
 	return m_score;
 }
 
-void Snake::IncreaeScore()
+void Snake::IncreaseScore()
 {
 	m_score += 10;
 }

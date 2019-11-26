@@ -19,7 +19,7 @@ private:
 	int m_blockSize;
 
 	sf::CircleShape m_appleShape;
-	sf::RectangleShape m_nounds[4];
+	sf::RectangleShape m_bounds[4];
 
 };
 
