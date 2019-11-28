@@ -1,6 +1,7 @@
 #ifndef GAME
 
 #include "Window.h"
+#include "World.h"
 
 class Game
 {
@@ -16,14 +17,16 @@ public:
 	void RestartClock();
 
 private:
-	void MoveMushroom();
 	Window m_window;
+	World m_world;
+	Snake m_snake;
 
+	float m_elapsed;
 	sf::Texture m_mushroomTexture;
 	sf::Sprite m_mushroom;
 	sf::Vector2i m_increment;
 	sf::Clock m_clock;
-	sf::Time m_elapsed;
+	
 
 };
 

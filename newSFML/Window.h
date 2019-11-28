@@ -19,6 +19,7 @@ public:
 
 	bool IsDone();
 	bool isFullScreen();
+	sf::RenderWindow* GetRenderWindow();
 	sf::Vector2u GetWindowSize();
 
 	void ToggleFullScreen();

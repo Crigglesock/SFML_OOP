@@ -1,10 +1,8 @@
 #include "Game.h"
 
-Game::Game() : m_window("Bouncy Mushroom", sf::Vector2u(800,600))
+Game::Game() : m_window("Snake", sf::Vector2u(800,600)),m_snake(m_world.GetBlockSize()),m_world(sf::Vector2u(800,600))
 {
-	m_mushroomTexture.loadFromFile("Deps/Images/Mushroom.png");
-	m_mushroom.setTexture(m_mushroomTexture);
-	m_increment = sf::Vector2i(400, 400);
+	
 }
 
 Game::~Game()
@@ -14,19 +12,47 @@ Game::~Game()
 
 void Game::HandleInput()
 {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && m_snake.GetDirection() != Direction::Down)
+	{
+		m_snake.SetDirection(Direction::Up);
+	}
 
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && m_snake.GetDirection() != Direction::Up)
+	{
+		m_snake.SetDirection(Direction::Down);
+	}
+
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && m_snake.GetDirection() != Direction::Right)
+	{
+		m_snake.SetDirection(Direction::Left);
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && m_snake.GetDirection() != Direction::Left)
+	{
+		m_snake.SetDirection(Direction::Right);
+	}
 }
 
 void Game::Update()
 {
 	m_window.Update(); //Update Window events
-	MoveMushroom();
+	float timestep = 1.0f / m_snake.GetSpeed();
+
+	if (m_elapsed >= timestep) 
+	{
+		m_snake.Tick();
+		m_world.Update(m_snake);
+		m_elapsed -= timestep;
+		if (m_snake.HasLost()) {
+			m_snake.Reset();
+		}
+	}
 }
 
 void Game::Render()
 {
 	m_window.BeginDraw(); // clear the window
-	m_window.Draw(m_mushroom); //Draw mushroom
+	m_world.Render(*m_window.GetRenderWindow());
+	m_snake.Render(*m_window.GetRenderWindow());
 	m_window.EndDraw(); // display
 }
 
@@ -37,41 +63,15 @@ Window * Game::GetWindow()
 
 sf::Time Game::GetElapsed()
 {
-	return m_elapsed;
+	return m_clock.getElapsedTime();
 }
 
 void Game::RestartClock()
 {
-	m_elapsed = m_clock.restart();
+	m_elapsed += m_clock.restart().asSeconds();
 }
 
 
 
-void Game::MoveMushroom()
-{
-	sf::Vector2u l_windSize = m_window.GetWindowSize();
-	sf::Vector2u l_textSize = m_mushroomTexture.getSize();
-	m_mushroom.setOrigin(l_textSize.x / 2, l_textSize.y / 2);
-
-	//X axis bounce
-		if((m_mushroom.getPosition().x + (l_textSize.x/2) > l_windSize.x && m_increment.x > 0)||(m_mushroom.getPosition().x - (l_textSize.x/2) < 0 && m_increment.x < 0))
-		{
-			//reverse direction on the x axis
-			m_increment.x = -m_increment.x;
-		}
-
-		//Y axis bounce
-		if ((m_mushroom.getPosition().y + (l_textSize.y / 2) > l_windSize.y && m_increment.y > 0) || (m_mushroom.getPosition().y - (l_textSize.y / 2) < 0 && m_increment.y < 0))
-		{
-			//reverse direction on the y axis
-			m_increment.y = -m_increment.y;
-		}
-
-		float fElapsed = m_elapsed.asSeconds();
-
-	m_mushroom.setPosition(
-		m_mushroom.getPosition().x + (m_increment.x * fElapsed),
-		m_mushroom.getPosition().y + (m_increment.y * fElapsed));
-}
 
 
