@@ -2,6 +2,7 @@
 
 #include "Window.h"
 #include "World.h"
+#include "Text.h"
 
 class Game
 {
