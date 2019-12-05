@@ -3,6 +3,8 @@
 Game::Game() : m_window("Snake", sf::Vector2u(800,600)),m_snake(m_world.GetBlockSize()),m_world(sf::Vector2u(800,600))
 {
 	m_textbox.Setup(5, 14, 350, sf::Vector2f(255, 0));
+
+	m_textbox.Add("Seeded random number generator with: " + std::to_string(time(NULL)));
 }
 
 Game::~Game()
@@ -30,6 +32,8 @@ void Game::HandleInput()
 	{
 		m_snake.SetDirection(Direction::Right);
 	}
+
+
 }
 
 void Game::Update()
@@ -53,6 +57,8 @@ void Game::Render()
 	m_window.BeginDraw(); // clear the window
 	m_world.Render(*m_window.GetRenderWindow());
 	m_snake.Render(*m_window.GetRenderWindow());
+	m_textbox.Render(*m_window.GetRenderWindow());
+
 	m_window.EndDraw(); // display
 }
 

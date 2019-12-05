@@ -1,4 +1,4 @@
-#ifndef TEXT
+#ifndef TEXTBOX
 
 #include"SFML/include/SFML/Window.hpp"
 #include"SFML/include/SFML/Graphics.hpp"
@@ -25,7 +25,6 @@ private:
 	sf::RectangleShape m_backdrop;
 	sf::Font m_font;
 	sf::Text m_content;
-
 };
 
 

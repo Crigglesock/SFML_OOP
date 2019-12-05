@@ -21,6 +21,7 @@ private:
 	Window m_window;
 	World m_world;
 	Snake m_snake;
+	Textbox m_textbox;
 
 	float m_elapsed;
 	sf::Texture m_mushroomTexture;
